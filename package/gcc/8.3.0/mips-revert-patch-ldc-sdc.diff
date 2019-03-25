@@ -1,0 +1,76 @@
+See these bug reports about it :
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=798710
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79560
+
+I can personally myself confirm that i am encountering this issue too while trying to compile
+Linux 2.6.31 with a MIPSel toolchain.
+GCC 4.9 worked but anything more recent than that breaks it and it complains about ldc1 and sdc1 not valid MIPS instructions.
+(Even though they are in MIPS32 and it's even documented)
+
+It seem that apparently the target is being set to -mips1, which would explain the issue.
+I'm not aware of any patches that could fix this bug better than just removing/changing the affecting code for GCC 8.x.
+
+--- a/gcc/jit/jit-playback.c
++++ b/gcc/jit/jit-playback.c
+@@ -2440,12 +2440,10 @@
+   /* Currently this lumps together both assembling and linking into
+      TV_ASSEMBLE.  */
+   auto_timevar assemble_timevar (get_timer (), tv_id);
+-  auto_argvec argvec;
+-#define ADD_ARG(arg) argvec.safe_push (xstrdup (arg))
++  auto_vec <const char *> argvec;
++#define ADD_ARG(arg) argvec.safe_push (arg)
+ 
+   ADD_ARG (gcc_driver_name);
+-
+-  add_multilib_driver_arguments (&argvec);
+ 
+   if (shared)
+     ADD_ARG ("-shared");
+@@ -2551,35 +2549,6 @@
+     }
+ }
+ 
+-/* Extract the target-specific MULTILIB_DEFAULTS to
+-   multilib_defaults_raw for use by
+-   playback::context::add_multilib_driver_arguments ().  */
+-
+-#ifndef MULTILIB_DEFAULTS
+-#define MULTILIB_DEFAULTS { "" }
+-#endif
+-
+-static const char *const multilib_defaults_raw[] = MULTILIB_DEFAULTS;
+-
+-/* Helper function for playback::context::invoke_driver ().
+-
+-   32-bit and 64-bit multilib peer builds of libgccjit.so may share
+-   a driver binary.  We need to pass in options to the shared driver
+-   to get the appropriate assembler/linker options for this multilib
+-   peer.  */
+-
+-void
+-playback::context::
+-add_multilib_driver_arguments (vec <char *> *argvec)
+-{
+-  JIT_LOG_SCOPE (get_logger ());
+-
+-  /* Add copies of the arguments in multilib_defaults_raw to argvec,
+-     prepending each with a "-".  */
+-  for (size_t i = 0; i < ARRAY_SIZE (multilib_defaults_raw); i++)
+-    if (multilib_defaults_raw[i][0])
+-      argvec->safe_push (concat ("-", multilib_defaults_raw[i], NULL));
+-}
+ 
+ /* Dynamically-link the built DSO file into this process, using dlopen.
+    Wrap it up within a jit::result *, and return that.
+--- a/gcc/jit/jit-playback.h
++++ b/gcc/jit/jit-playback.h
+@@ -295,8 +295,6 @@
+ 		 bool shared,
+ 		 bool run_linker);
+ 
+-  void
+-  add_multilib_driver_arguments (vec <char *> *argvec);
+ 
+   result *
+   dlopen_built_dso ();

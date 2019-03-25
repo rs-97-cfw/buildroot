@@ -1,0 +1,25 @@
+diff --git a/libc/sysdeps/linux/mips/crtn.S b/libc/sysdeps/linux/mips/crtn.S
+--- a/libc/sysdeps/linux/mips/crtn.S
++++ b/libc/sysdeps/linux/mips/crtn.S
+@@ -3,7 +3,6 @@
+ 	.file	1 "initfini.c"
+ 	.section .mdebug.abi32
+ 	.previous
+-	.abicalls
+ #APP
+ 	
+ 	.section .init
+@@ -45,7 +44,6 @@
+ 	.file	1 "initfini.c"
+ 	.section .mdebug.abiN32
+ 	.previous
+-	.abicalls
+ #APP
+ 	
+ 	.section .init
+@@ -86,7 +84,6 @@
+ 	.file	1 "initfini.c"
+ 	.section .mdebug.abi64
+ 	.previous
+-	.abicalls
+ #APP
