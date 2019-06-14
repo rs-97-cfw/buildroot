@@ -1,0 +1,22 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -40,7 +40,7 @@
+ # used as platform library in examples:
+ # todo, make the PREFERED_PLATFORM selectable, after the set of possible 
+ # Platforms to link the examples have been evaluated.
+-PREFERED_PLATFORM=X11
++PREFERED_PLATFORM=sdl
+ case "$host" in
+   *darwin* )
+     OSX_LIBS="-framework Carbon -framework QuickTime"
+@@ -121,9 +121,7 @@
+ if test "$no_x" = "yes"; then
+   AC_MSG_WARN([*** X11 not found! Omitting X11 layer.])
+ fi
+-AM_CONDITIONAL(ENABLE_X11,[test x$no_x = x -a xno != x$enable_platform -a x$win32_host != xyes])
+-AC_SUBST(x_includes)
+-AC_SUBST(x_libraries)
++AM_CONDITIONAL(ENABLE_X11,0])
+ dnl ###############################################
+ 
+ dnl Settung up library version

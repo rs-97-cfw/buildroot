@@ -507,6 +507,7 @@ else
 FFMPEG_CONF_OPTS += --disable-pic
 endif
 
+
 # Default to --cpu=generic for MIPS architecture, in order to avoid a
 # warning from ffmpeg's configure script.
 ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
@@ -518,6 +519,8 @@ FFMPEG_CONF_OPTS += --cpu="$(GCC_TARGET_ARCH)"
 endif
 
 FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
+
+FFMPEG_CONF_OPTS += --disable-msa --disable-mipsdsp --disable-mipsdspr2 --disable-asm --disable-mips32r2 --disable-mips32r5
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
 define FFMPEG_CONFIGURE_CMDS
