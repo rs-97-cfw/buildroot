@@ -39,4 +39,3 @@ diff -Nur SDL_mixer-1.2.13.orig/mixer.c SDL_mixer-1.2.13/mixer.c
 +	
  	return(0);
  }
- 

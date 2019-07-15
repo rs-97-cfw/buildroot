@@ -6,7 +6,7 @@ diff -ru SDL_mixer-1.2.13.org/configure.in SDL_mixer-1.2.13/configure.in
          AC_MSG_CHECKING([for libmikmod - version >= $libmikmod_ver])
          AC_TRY_RUN([
 -#include "mikmod.h"
-+#include "libmodplug/mikmod.h"
++#include <libmodplug/modplug.h>
  #include "stdio.h"
  
  int main(int argc, char **argv)

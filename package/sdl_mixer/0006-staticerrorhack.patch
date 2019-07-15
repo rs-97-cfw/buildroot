@@ -1,3 +1,91 @@
+--- a/configure
++++ a/configure
+@@ -15107,8 +15107,10 @@
+             EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lmpg123"
+         fi
+     else
+-        { $as_echo "$as_me:$LINENO: WARNING: *** Unable to find mpg123 library (https://www.mpg123.de)" >&5
+-$as_echo "$as_me: WARNING: *** Unable to find mpg123 library (https://www.mpg123.de)" >&2;}
++		have_mpg123=yes
++        SOURCES="$SOURCES $srcdir/*_mp3.c $srcdir/*_mpg.c"
++		EXTRA_CFLAGS="$EXTRA_CFLAGS -DMP3_MUSIC"
++		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lmpg123"
+     fi
+ fi
+ 
+
+--- a/configure
++++ a/configure
+@@ -13939,10 +13939,9 @@
+                 EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec -lvorbis"
+             fi
+         else
+-            { $as_echo "$as_me:$LINENO: WARNING: *** Unable to find Ogg Vorbis Tremor library (http://www.xiph.org/)" >&5
+-$as_echo "$as_me: WARNING: *** Unable to find Ogg Vorbis Tremor library (http://www.xiph.org/)" >&2;}
+-            { $as_echo "$as_me:$LINENO: WARNING: Ogg Vorbis support disabled" >&5
+-$as_echo "$as_me: WARNING: Ogg Vorbis support disabled" >&2;}
++            SOURCES="$SOURCES $srcdir/*_ogg.c"
++            EXTRA_CFLAGS="$EXTRA_CFLAGS -DOGG_MUSIC -DOGG_USE_TREMOR"
++			EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec -lvorbis"
+         fi
+     else
+         if test "${ac_cv_header_vorbis_vorbisfile_h+set}" = set; then
+@@ -14170,10 +14169,9 @@
+                 EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisfile -lvorbis -logg -lm"
+             fi
+         else
+-            { $as_echo "$as_me:$LINENO: WARNING: *** Unable to find Ogg Vorbis library (http://www.xiph.org/)" >&5
+-$as_echo "$as_me: WARNING: *** Unable to find Ogg Vorbis library (http://www.xiph.org/)" >&2;}
+-            { $as_echo "$as_me:$LINENO: WARNING: Ogg Vorbis support disabled" >&5
+-$as_echo "$as_me: WARNING: Ogg Vorbis support disabled" >&2;}
++            SOURCES="$SOURCES $srcdir/*_ogg.c"
++            EXTRA_CFLAGS="$EXTRA_CFLAGS -DOGG_MUSIC"
++			EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisfile -lvorbis -logg -lm"
+         fi
+     fi
+     LIBS="$LIBS_SAVED"
+--- a/configure.in
++++ b/configure.in
+@@ -583,7 +583,10 @@
+             EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lmpg123"
+         fi
+     else
+-        AC_MSG_WARN([*** Unable to find mpg123 library (https://www.mpg123.de)])
++		have_mpg123=yes
++        SOURCES="$SOURCES $srcdir/*_mp3.c $srcdir/*_mpg.c"
++        EXTRA_CFLAGS="$EXTRA_CFLAGS -DMP3_MUSIC"
++        EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lmpg123"
+     fi
+ fi
+ 
+
+--- a/configure.in
++++ a/configure.in
+@@ -452,8 +452,9 @@
+                 EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec -lvorbis"
+             fi
+         else
+-            AC_MSG_WARN([*** Unable to find Ogg Vorbis Tremor library (http://www.xiph.org/)])
+-            AC_MSG_WARN([Ogg Vorbis support disabled])
++			SOURCES="$SOURCES $srcdir/*_ogg.c"
++			EXTRA_CFLAGS="$EXTRA_CFLAGS -DOGG_MUSIC -DOGG_USE_TREMOR"
++			EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec -lvorbis"
+         fi
+     else
+         AC_CHECK_HEADER([vorbis/vorbisfile.h], [have_ogg_hdr=yes])
+@@ -482,8 +483,9 @@
+                 EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisfile -lvorbis -logg -lm"
+             fi
+         else
+-            AC_MSG_WARN([*** Unable to find Ogg Vorbis library (http://www.xiph.org/)])
+-            AC_MSG_WARN([Ogg Vorbis support disabled])
++            SOURCES="$SOURCES $srcdir/*_ogg.c"
++            EXTRA_CFLAGS="$EXTRA_CFLAGS -DOGG_MUSIC"
++            EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisfile -lvorbis -logg -lm"
+         fi
+     fi
+     LIBS="$LIBS_SAVED"
+
 --- a/dynamic_mod.c
 +++ b/dynamic_mod.c
 @@ -28,6 +28,8 @@
