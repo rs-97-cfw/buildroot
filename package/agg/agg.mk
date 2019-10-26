@@ -6,7 +6,7 @@
 
 AGG_VERSION = 2.5
 AGG_SOURCE = agg-$(AGG_VERSION).tar.gz
-AGG_SITE = https://archlinux.mirror.pkern.at/other/community/agg
+AGG_SITE = https://ftp.osuosl.org/pub/blfs/8.0/a
 AGG_LICENSE = GPLv3+
 AGG_LICENSE_FILES = COPYING
 AGG_INSTALL_STAGING = YES
