@@ -24,7 +24,7 @@
 
 --- a/playmus.c
 +++ b/playmus.c
-@@ -1,239 +1 @@
+@@ -1,247 +0,0 @@
 -/*
 -  PLAYMUS:  A test application for the SDL mixer library.
 -  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
@@ -91,6 +91,7 @@
 -	fprintf(stderr, "Usage: %s [-i] [-l] [-8] [-r rate] [-c channels] [-b buffers] [-v N] [-rwops] <musicfile>\n", argv0);
 -}
 -
+-/*#define SEEK_TEST */
 -void Menu(void)
 -{
 -	char buf[10];
@@ -99,6 +100,13 @@
 -	fflush(stdin);
 -	if (scanf("%s",buf) == 1) {
 -		switch(buf[0]){
+-#if defined(SEEK_TEST)
+-		case '0': Mix_SetMusicPosition(0); break;
+-		case '1': Mix_SetMusicPosition(10);break;
+-		case '2': Mix_SetMusicPosition(20);break;
+-		case '3': Mix_SetMusicPosition(30);break;
+-		case '4': Mix_SetMusicPosition(40);break;
+-#endif /* SEEK_TEST */
 -		case 'p': case 'P':
 -			Mix_PauseMusic();
 -			break;
@@ -264,10 +272,11 @@
 -	/* Not reached, but fixes compiler warnings */
 -	return 0;
 -}
+
 +int main(){}
 --- a/playwave.c
 +++ b/playwave.c
-@@ -1,501 +1 @@
+@@ -1,501 +0,0 @@
 -/*
 -  PLAYWAVE:  A test application for the SDL mixer library.
 -  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
