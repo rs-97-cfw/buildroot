@@ -87,9 +87,9 @@ config BR2_mips_p5600
 config BR2_mips_xburst
 	bool "XBurst"
 	depends on !BR2_ARCH_IS_64
-	select BR2_MIPS_CPU_MIPS32R2
+	select BR2_MIPS_CPU_MIPS32
 	help
-	  The Ingenic XBurst is a MIPS32R2 microprocessor. It has a
+	  The Ingenic XBurst is a MIPS32 microprocessor. It has a
 	  bug in the FPU that can generate incorrect results in
 	  certain cases. The problem shows up when you have several
 	  fused madd instructions in sequence with dependant

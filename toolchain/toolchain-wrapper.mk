@@ -46,6 +46,9 @@ ifeq ($(BR2_x86_x1000),y)
 TOOLCHAIN_WRAPPER_ARGS += -DBR_OMIT_LOCK_PREFIX
 endif
 
+# JZ4760 FPU bug flaw
+TOOLCHAIN_WRAPPER_ARGS += -DBR_FP_CONTRACT_OFF
+
 # Avoid FPU bug on XBurst CPUs
 ifeq ($(BR2_mips_xburst),y)
 # Before gcc 4.6, -mno-fused-madd was needed, after -ffp-contract is

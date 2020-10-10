@@ -1,0 +1,11 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -40,7 +40,7 @@
+ option(BUILD_TESTS "build xmltest (deprecated: Use BUILD_TESTING)" ON)
+ 
+ # To allow using tinyxml in another shared library
+-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
++set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
+ 
+ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+ set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
